@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Footprint Authentication System</title>
+    <!-- Add any necessary CSS styles or external libraries -->
+  </head>
+  <body>
+    <h1>Footprint Authentication System</h1>
+
+    <h2>Register Footprint</h2>
+    <form id="registerForm">
+      <input type="file" name="file" id="registerFileInput" />
+      <button type="submit" id="registerButton">Register</button>
+    </form>
+
+    <h2>Access Footprint</h2>
+    <form id="accessForm">
+      <input type="file" name="file" id="accessFileInput" />
+      <button type="submit" id="accessButton">Access</button>
+    </form>
+
+    <script>
+      // Function to handle form submission for registering a footprint
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          let formData = new FormData();
+          formData.append(
+            "file",
+            document.getElementById("registerFileInput").files[0]
+          );
+
+          fetch("/reg", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Footprint registered:", data);
+              // Add logic to handle the response (e.g., display success message)
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+
+      // Function to handle form submission for accessing a footprint
+      document
+        .getElementById("accessForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          let formData = new FormData();
+          formData.append(
+            "file",
+            document.getElementById("accessFileInput").files[0]
+          );
+
+          fetch("/access", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Access result:", data);
+              // Add logic to handle the response (e.g., display access result)
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+    </script>
+  </body>
+</html>
