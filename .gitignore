@@ -1,4 +1,7 @@
 .venv/
 venv/
+temp/
+train/
+*.db
 *.pyc
 __pycache__/

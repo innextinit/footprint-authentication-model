@@ -2,7 +2,92 @@
 <html>
   <head>
     <title>Footprint Authentication System</title>
-    <!-- Add any necessary CSS styles or external libraries -->
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f7f7f7;
+      }
+
+      h1 {
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      h2 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+      }
+
+      input[type="file"],
+      button[type="submit"] {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+      }
+
+      button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        text-align: center;
+      }
+
+      #closeModalBtn {
+        float: right;
+        cursor: pointer;
+      }
+
+      #modalContent {
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
   </head>
   <body>
     <h1>Footprint Authentication System</h1>
@@ -19,7 +104,36 @@
       <button type="submit" id="accessButton">Access</button>
     </form>
 
+    <!-- Modal to display API response -->
+    <div id="responseModal" class="modal">
+      <div class="modal-content">
+        <span id="modalContent"></span>
+        <button id="closeModalBtn">Close</button>
+      </div>
+    </div>
+
     <script>
+      // Function to display the response in a modal
+      function showModal(results) {
+        const modal = document.getElementById("responseModal");
+        const modalContent = document.getElementById("modalContent");
+
+        modal.style.display = "block";
+
+        modalContent.textContent = results;
+      }
+
+      // Function to hide the modal
+      function hideModal() {
+        const modal = document.getElementById("responseModal");
+        modal.style.display = "none";
+      }
+
+      // close model
+      document
+        .getElementById("closeModalBtn")
+        .addEventListener("click", hideModal);
+
       // Function to handle form submission for registering a footprint
       document
         .getElementById("registerForm")
@@ -38,8 +152,8 @@
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log("Footprint registered:", data);
-              // Add logic to handle the response (e.g., display success message)
+              showModal(data.message);
+              document.getElementById("registerForm").reset();
             })
             .catch((error) => console.error("Error:", error));
         });
@@ -62,8 +176,16 @@
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log("Access result:", data);
-              // Add logic to handle the response (e.g., display access result)
+              if (data.results && data.results.length > 0) {
+                const accessResult = data.results[0];
+                const message = `Footprint ${accessResult.image_name} is a match with (ID: ${accessResult.id}, Distance: ${accessResult.distance})`;
+
+                showModal(message);
+              } else {
+                showModal("No matching footprints found.");
+              }
+
+              document.getElementById("accessForm").reset();
             })
             .catch((error) => console.error("Error:", error));
         });

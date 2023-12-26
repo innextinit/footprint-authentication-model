@@ -2,7 +2,6 @@ import cv2
 
 def normalize_image_orientation(image_path):
     img = cv2.imread(image_path)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img_corrected = cv2.flip(img, 0)
     return img_corrected
 

@@ -2,8 +2,8 @@ import os
 from flask import Flask, request, jsonify, send_file
 import keras
 from keras.models import load_model
-from image_processing import preprocess_image  # Import your image processing functions
-from database_operations import save_features, find_matching_features  # Import your database operations
+from image_processing import preprocess_image
+from database_operations import save_features, find_matching_features
 
 current_directory = os.getcwd()
 static_dir = os.path.join(current_directory, 'static')
@@ -43,13 +43,10 @@ def register_footprint():
       # Extract features from the preprocessed image using the trained CNN model
     extracted_features = feature_extraction_model.predict(processed_image.reshape(1, 150, 150, 3))  # Assuming image size is 150x150
 
-    # Save extracted features to the database against the image name
-    # Replace 'extracted_features' with the actual features extracted
     image_name = uploaded_file.filename
-    print("extracted_features", extracted_features)
     save_features(image_name, extracted_features)
 
-    return jsonify({'message': 'Footprint registered successfully'}), 200
+    return jsonify({'message': f'Footprint {image_name} registered successfully'}), 200
 
 @app.route('/access', methods=['POST'])
 def authenticate_footprint():
@@ -73,7 +70,6 @@ def authenticate_footprint():
 
     # Find matching features in the database
     # Replace 'extracted_features' with the actual features extracted
-    print("extracted_features", extracted_features)
     matched_results = find_matching_features(extracted_features)
 
     # Return matching results or relevant information

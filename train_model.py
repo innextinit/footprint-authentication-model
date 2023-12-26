@@ -1,4 +1,3 @@
-import tensorflow as tf
 import keras
 import os
 from matplotlib import pyplot as plt
@@ -20,8 +19,6 @@ train_datagen = keras.utils.image_dataset_from_directory(
   batch_size=batch_size,
 )
 
-print("images rep as numpy array", train_datagen.as_numpy_iterator().next()[0].shape)
-
 # scale data into smaller size
 scaled_trained_data = train_datagen.map(lambda x,y: (x/255, y))
 
@@ -33,8 +30,6 @@ testing_size = int(len(scaled_trained_data)*.1)+1
 training_batches = scaled_trained_data.take(training_size)
 validation_batches = scaled_trained_data.skip(training_size).take(validation_size)
 test_batches = scaled_trained_data.skip(training_size + validation_size).take(testing_size)
-
-print(test_batches)
 
 # building the feature extraction CNN model
 input_shape = (img_height, img_width, 3)

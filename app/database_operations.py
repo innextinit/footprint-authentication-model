@@ -29,6 +29,7 @@ Base.metadata.create_all(engine)
 
 # Function to save extracted features to the database
 def save_features(image_name, features):
+    # Convert the features to a NumPy array
     features_array = np.array(features).flatten()
     features_bytes = features_array.tobytes()
 
@@ -38,33 +39,36 @@ def save_features(image_name, features):
     session.add(new_footprint)
     session.commit()
 
-    print(f"Features extracted from '{image_name}' saved to the database.")
+    return
 
 # Function to find matching features in the database
 
 def find_matching_features(features):
     # Convert the extracted features to a NumPy array for comparison
     features_array = np.array(features).flatten()
-    print("features_array", features_array)
 
     # Query all footprints from the database
     all_footprints = session.query(Footprint).all()
 
     matching_indices = []
     for index, footprint in enumerate(all_footprints):
-        # Convert stored features from string to NumPy array for comparison
+        # Convert stored features from string to NumPy array
         stored_features_bytes = footprint.features
         stored_features_array = np.frombuffer(stored_features_bytes, dtype=np.float32)
 
         # Calculate similarity using Euclidean distance
         distance = euclidean(features_array, stored_features_array)
-        print("distance", distance)
         
         # Define a threshold for similarity comparison
         threshold = 0.1  # 90% similarity
 
         if distance < threshold:
-            matching_indices.append((footprint.id, footprint.image_name, index))
+            matching_indices.append({
+                'id': footprint.id,
+                'image_name': footprint.image_name,
+                'index': index,
+                'distance': distance
+            })
 
     return matching_indices
 
