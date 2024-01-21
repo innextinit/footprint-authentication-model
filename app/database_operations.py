@@ -60,7 +60,9 @@ def find_matching_features(features):
         distance = euclidean(features_array, stored_features_array)
         
         # Define a threshold for similarity comparison
-        threshold = 0.1  # 90% similarity
+        threshold = 0.4  # 60% similarity
+
+        print(distance)
 
         if distance < threshold:
             matching_indices.append({

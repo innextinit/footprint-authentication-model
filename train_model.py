@@ -10,7 +10,7 @@ log_dir = os.path.join(current_directory, 'logs')
 
 # Define image dimensions and batch size
 img_height, img_width = 150, 150
-batch_size = 10
+batch_size = 100
 
 # load the training dataset
 train_datagen = keras.utils.image_dataset_from_directory(
@@ -58,7 +58,7 @@ tensorboard_callback = keras.callbacks.TensorBoard(log_dir)
 
 history = feature_extraction_model.fit(
     training_batches,
-    epochs=20,
+    epochs=10,
     validation_data=validation_batches,
     callbacks=[tensorboard_callback]
 )

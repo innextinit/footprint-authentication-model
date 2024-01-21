@@ -1,7 +1,6 @@
 .venv/
 venv/
 temp/
-train/
 logs/
 *.db
 *.pyc
