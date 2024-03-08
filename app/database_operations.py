@@ -31,7 +31,10 @@ Base.metadata.create_all(engine)
 def save_features(image_name, features):
     # Convert the features to a NumPy array
     features_array = np.array(features).flatten()
+
     features_bytes = features_array.tobytes()
+
+    print("To Save Features Length:", len(features_bytes))
 
     new_footprint = Footprint(image_name=image_name, features=features_bytes)
 
@@ -55,12 +58,14 @@ def find_matching_features(features):
         # Convert stored features from string to NumPy array
         stored_features_bytes = footprint.features
         stored_features_array = np.frombuffer(stored_features_bytes, dtype=np.float32)
+        
+        print("Stored Features Shape:", len(stored_features_array), len(features_array))
 
         # Calculate similarity using Euclidean distance
         distance = euclidean(features_array, stored_features_array)
         
         # Define a threshold for similarity comparison
-        threshold = 0.4  # 60% similarity
+        threshold = 0.3  # 70% similarity
 
         print(distance)
 

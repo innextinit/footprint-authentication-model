@@ -1,5 +1,7 @@
 .venv/
 venv/
+test/
+train/
 temp/
 logs/
 *.db
