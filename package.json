@@ -4,7 +4,7 @@
   "description": "takes fooprint image, nomalize it, extract features that could be used for identification and later rematch after registering for access",
   "main": "app/server.py",
   "scripts": {
-    "install": "pip install -r requirements.txt",
+    "install": "pip3 install -r requirements.txt",
     "train": "python3 train_model.py",
     "update_req": "pip freeze > requirements.txt",
     "dev": "python3 app/server.py"
