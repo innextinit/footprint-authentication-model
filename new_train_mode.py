@@ -26,7 +26,7 @@ classes = sorted(directories)
 
 #CNN Network
 class ConvNet(nn.Module):
-    def __init__(self,num_classes=10): # always update num_classes to the number of training set
+    def __init__(self,num_classes=95): # always update num_classes to the number of training set
         super(ConvNet,self).__init__()
         
         #Output size after convolution filter
@@ -80,7 +80,7 @@ class ConvNet(nn.Module):
 
 # Training Function
 def train_model(train_loader, num_epochs=20, learning_rate=0.001):
-    model = ConvNet(num_classes=10)
+    model = ConvNet(num_classes=95)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     
@@ -133,7 +133,7 @@ def save_model(model, filepath):
     print("Model saved successfully.")
 
 def load_model(filepath):
-    model = ConvNet(num_classes=10)
+    model = ConvNet(num_classes=95)
     model.load_state_dict(torch.load(filepath))
     model.eval()
     return model

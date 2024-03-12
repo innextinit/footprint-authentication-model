@@ -1,6 +1,5 @@
 .venv/
 venv/
-test/
 temp/
 logs/
 dataset/
