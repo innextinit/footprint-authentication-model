@@ -3,7 +3,6 @@ import os
 from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 
-
 # Set your training and validation directories
 current_directory = os.getcwd()
 train_dir = os.path.join(current_directory, 'train')
