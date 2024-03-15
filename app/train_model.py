@@ -1,16 +1,11 @@
 #Load libraries
 import os
-import numpy as np
 import torch
 import glob
 import torch.nn as nn
 import torchvision
-import torchvision.transforms.functional as F
 from PIL import Image
 from torchvision.transforms import transforms
-from torch.utils.data import DataLoader
-from torch.optim import Adam
-from torch.autograd import Variable
 
 train_path='/Users/mainstackhawkeye/Documents/footprint-authentication-model/train'
 
@@ -130,7 +125,6 @@ def get_data_loader(train_path, batch_size=256):
 
 def save_model(model, filepath):
     torch.save(model.state_dict(), filepath)
-    print("Model saved successfully.")
 
 def load_model(filepath):
     model = ConvNet(num_classes=95)
@@ -174,7 +168,6 @@ def load_prediction(image_files, loaded_model):
         pred = prediction(loaded_model, image_file)
         # Store prediction in the dictionary
         predictions[filename] = pred
-    # Print predictions
     return predictions
 
 def load_images():
@@ -185,7 +178,6 @@ def load_images():
         if os.path.isdir(folder_path):
             # Search for image files within the subfolder and append their paths to the list
             image_files.extend(glob.glob(os.path.join(folder_path, '*.jpg')))
-    print(image_files)
     return image_files
 
 if __name__ == "__main__":

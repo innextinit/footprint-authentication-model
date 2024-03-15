@@ -178,7 +178,7 @@
             .then((data) => {
               if (data.results && data.results.length > 0) {
                 const accessResult = data.results[0];
-                const message = `Footprint ${accessResult.image_name} is a match with (ID: ${accessResult.id}, Distance: ${accessResult.distance})`;
+                const message = `Footprint ${accessResult.matching_image_name} is a match with (ID: ${accessResult.id}, Image Name: ${accessResult.image_name}) with an accuracy of ${accessResult.accuracy}.`;
 
                 showModal(message);
               } else {

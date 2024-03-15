@@ -5,7 +5,7 @@
   "main": "app/server.py",
   "scripts": {
     "install": "pip3 install -r requirements.txt",
-    "train": "python3 new_train_mode.py",
+    "train": "python3 app/train_model.py",
     "update_req": "pip freeze > requirements.txt",
     "dev": "python3 app/server.py"
   },

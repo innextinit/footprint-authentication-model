@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Create directories and copy images for each user
-for ((i=14; i<=95; i++)); do
+for ((i=1; i<=95; i++)); do
     # Create the user directory
     mkdir -p "train/user$i" "test/user$i"
     
