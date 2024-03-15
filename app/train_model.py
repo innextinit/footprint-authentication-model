@@ -7,9 +7,9 @@ import torchvision
 from PIL import Image
 from torchvision.transforms import transforms
 
-train_path='/Users/mainstackhawkeye/Documents/footprint-authentication-model/train'
-
-test_path = '/Users/mainstackhawkeye/Documents/footprint-authentication-model/test'
+current_directory = os.path.dirname(os.path.realpath(__file__))
+train_path = os.path.join(current_directory, '..', 'train')
+test_path = os.path.join(current_directory, '..', 'test')
 
 predictions = {}
 

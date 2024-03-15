@@ -16,7 +16,8 @@ def register_image(file_path, endpoint_url):
 # Main function
 def main():
     # Directory containing validation images
-    validation_folder = '/Users/mainstackhawkeye/Documents/footprint-authentication-model/validation'
+    current_directory = os.path.dirname(os.path.realpath(__file__))
+    validation_folder = os.path.join(current_directory, 'validation')
     # URL of the /reg endpoint
     reg_endpoint_url = 'http://localhost:5000/reg'  # Update the URL with your actual endpoint URL
     
