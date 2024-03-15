@@ -3,6 +3,5 @@ venv/
 temp/
 logs/
 dataset/
-*.db
 *.pyc
 __pycache__/
