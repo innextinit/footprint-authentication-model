@@ -33,7 +33,7 @@ def extract_features(uploaded_file):
         features = trained_model(processed_image)
         weight, _ = torch.max(features, 1)
 
-    return weight.item(), processed_image.numpy() # return the prediction weight
+    return weight.item(), processed_image.numpy()
 
 @app.route('/')
 def index():

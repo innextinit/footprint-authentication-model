@@ -16,21 +16,6 @@ def compare_images(image1_data, image2_data):
 
 
 
-# def compare_images(image1, image2):
-#     """
-#     Compare two sets of image data using Mean Squared Error (MSE).
-#     """
-#     # Convert image data to numpy arrays
-#     image1_array = np.array(image1)
-#     image2_array = np.array(image2)
-    
-#     # Calculate Mean Squared Error (MSE)
-#     mse = np.mean((image1_array - image2_array) ** 2)
-    
-#     return mse
-
-
-
 # Create the SQLAlchemy database engine
 engine = create_engine('sqlite:///footprint_database.db', echo=True)
 
@@ -72,8 +57,8 @@ def find_matching_features(image_name, prediction_weight, processed_image):
 
     matching_indices = []
     pre_diff = 0
-    best_match = None  # Initialize best match to None
-    accuracy = 0 # Initialize to 0%
+    best_match = None
+    accuracy = 0
 
     for stored_footprint in all_footprints:
         # Deserialize the stored numpy array

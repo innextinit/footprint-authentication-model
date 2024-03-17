@@ -55,7 +55,7 @@ class ConvNet(nn.Module):
         
         self.fc=nn.Linear(in_features=75 * 75 * 32,out_features=num_classes)
         
-        #Feed forwad function
+        #Feed forward function
     def forward(self,input):
         output=self.conv1(input)
         output=self.bn1(output)
