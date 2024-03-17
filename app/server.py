@@ -25,13 +25,15 @@ def extract_features(uploaded_file):
     transformed_image = transformer(image)
     processed_image = torch.unsqueeze(transformed_image, 0)
 
+    # return processed_image
+
     trained_model = load_model("trained_model.pth")
     
     with torch.no_grad():
         features = trained_model(processed_image)
         weight, _ = torch.max(features, 1)
 
-    return weight.item() # return the prediction weight
+    return weight.item(), processed_image.numpy() # return the prediction weight
 
 @app.route('/')
 def index():
@@ -46,10 +48,10 @@ def register_footprint():
     if uploaded_file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     
-    extracted_features = extract_features(uploaded_file)
+    predicted_weight, processed_image = extract_features(uploaded_file)
 
     # Save features to the database
-    save_features(uploaded_file.filename, extracted_features)
+    save_features(uploaded_file.filename, predicted_weight, processed_image)
 
     return jsonify({'message': f'Footprint {uploaded_file.filename} registered successfully'}), 200
 
@@ -63,10 +65,10 @@ def authenticate_footprint():
     if uploaded_file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
 
-    extracted_features = extract_features(uploaded_file)
+    predicted_weight, processed_image = extract_features(uploaded_file)
 
     # Find matching features in the database
-    matched_results = find_matching_features(uploaded_file.filename, extracted_features)
+    matched_results = find_matching_features(uploaded_file.filename, predicted_weight, processed_image)
 
     return jsonify({'results': matched_results}), 200
 
