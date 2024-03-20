@@ -6,6 +6,7 @@ import torch.nn as nn
 import torchvision
 from PIL import Image
 from torchvision.transforms import transforms
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 train_path = os.path.join(current_directory, '..', 'train')
@@ -140,7 +141,7 @@ transformer = transforms.Compose([
                         std=[0.5,0.5,0.5])
 ])
 
-def prediction(loaded_model, img_path):
+def prediction(loaded_model, img_path, true_labels, predicted_labels):
     # Open the image file
     image = Image.open(img_path)
     image = image.convert("RGB")
@@ -157,15 +158,20 @@ def prediction(loaded_model, img_path):
     
     # Convert prediction index to class label
     pred_class = classes[predicted.item()]
+
+     # Append true label and prediction for evaluation
+    true_label = img_path.split(os.path.sep)[-2]  # Assuming the label is the folder name
+    true_labels.append(true_label)
+    predicted_labels.append(pred_class)
     
     return pred_class
 
-def load_prediction(image_files, loaded_model):
+def load_prediction(image_files, loaded_model, true_labels, predicted_labels):
     for image_file in image_files:
         # Get the filename
         filename = os.path.basename(image_file)
         # Make prediction
-        pred = prediction(loaded_model, image_file)
+        pred = prediction(loaded_model, image_file, true_labels, predicted_labels)
         # Store prediction in the dictionary
         predictions[filename] = pred
     return predictions
@@ -181,12 +187,31 @@ def load_images():
     return image_files
 
 if __name__ == "__main__":
+    true_labels = []
+    predicted_labels = []
     train_loader = get_data_loader(train_path)
     trained_model = train_model(train_loader)
-    save_model(trained_model, "trained_model.pth")
-    loaded_model = load_model("trained_model.pth")
+    save_model(trained_model, "tt_trained_model.pth")
+    loaded_model = load_model("tt_trained_model.pth")
     image_files = load_images()
-    result = load_prediction(image_files, loaded_model)
+    result = load_prediction(image_files, loaded_model, true_labels, predicted_labels)
     print("result",result)
+    # Compute evaluation metrics
+    accuracy = accuracy_score(true_labels, predicted_labels)
+    precision = precision_score(true_labels, predicted_labels, average='micro')
+    recall = recall_score(true_labels, predicted_labels, average='micro')
+    f1 = f1_score(true_labels, predicted_labels, average='micro')
+    confusion_mat = confusion_matrix(true_labels, predicted_labels)
+    confusion_mat_str = "\n".join([str(row) for row in confusion_mat])
+
+    # Write evaluation metrics to file
+    with open("evaluation_metrics.txt", "a") as metrics_file:
+        metrics_file.write(f"Accuracy: {accuracy}\n")
+        metrics_file.write(f"Precision: {precision}\n")
+        metrics_file.write(f"Recall: {recall}\n")
+        metrics_file.write(f"F1 Score: {f1}\n")
+        metrics_file.write(f"True labels: {true_labels}\n")
+        metrics_file.write(f"Predicted labels: {predicted_labels}\n")
+        metrics_file.write(f"Confusion Matrix:\n{confusion_mat_str}\n\n")
     
     
